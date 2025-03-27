@@ -9,14 +9,14 @@ import Foundation
 import Combine
 
 protocol ICharactersAPIService {
-    func getCharactersData() -> AnyPublisher<CharacterResponse, Error>
+    func getCharactersData() -> AnyPublisher<CharactersResponseData, Error>
 }
 
 class CharactersAPIService: ICharactersAPIService {
     static let shared = CharactersAPIService()
 
     private init() { }
-    func getCharactersData() -> AnyPublisher<CharacterResponse, Error> {
+    func getCharactersData() -> AnyPublisher<CharactersResponseData, Error> {
         guard let url = URL(string: .charactersDataUrl) else { fatalError("Someting wrong with URL") }
 
         let urlRequest = URLRequest(url: url)
@@ -28,10 +28,10 @@ class CharactersAPIService: ICharactersAPIService {
             .eraseToAnyPublisher()
     }
     
-    private func decodeCharactersData(response: URLResponse, data: Data?) throws -> CharacterResponse {
+    private func decodeCharactersData(response: URLResponse, data: Data?) throws -> CharactersResponseData {
         guard let data else { throw ResponseError.decodeCharactersDataError }
 
-        let charactersData = try JSONDecoder().decode(CharacterResponse.self, from: data)
+        let charactersData = try JSONDecoder().decode(CharactersResponseData.self, from: data)
         return charactersData
     }
 }

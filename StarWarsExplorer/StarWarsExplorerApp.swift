@@ -9,9 +9,12 @@ import SwiftUI
 
 @main
 struct StarWarsExplorerApp: App {
+    var characterListViewModel = CharacterListViewModel()
+    
     var body: some Scene {
         WindowGroup {
             CharactersListView()
+                .environmentObject(characterListViewModel)
         }
     }
 }

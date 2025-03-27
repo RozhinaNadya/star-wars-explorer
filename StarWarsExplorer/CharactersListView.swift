@@ -8,12 +8,14 @@
 import SwiftUI
 
 struct CharactersListView: View {
+    @EnvironmentObject var viewModel: CharacterListViewModel
+
     var body: some View {
         VStack {
             Image(systemName: "globe")
                 .imageScale(.large)
                 .foregroundStyle(.tint)
-            Text("Hello, world!")
+            Text("Response check! Count is \(viewModel.characterResponseData?.count.description ?? "0")")
         }
         .padding()
     }
