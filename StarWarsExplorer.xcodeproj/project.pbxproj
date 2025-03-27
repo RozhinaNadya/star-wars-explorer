@@ -35,6 +35,7 @@
 			membershipExceptions = (
 				CharacterDetailsViewModel.swift,
 				CharacterListViewModel.swift,
+				CharactersListItemView.swift,
 				Common/ErrorAlerts.swift,
 				Models/Character.swift,
 				Models/CharacterListItem.swift,
@@ -47,6 +48,7 @@
 			membershipExceptions = (
 				CharacterDetailsViewModel.swift,
 				CharacterListViewModel.swift,
+				CharactersListItemView.swift,
 				Common/ErrorAlerts.swift,
 				Models/Character.swift,
 				Models/CharacterListItem.swift,

@@ -9,15 +9,20 @@ import SwiftUI
 
 struct CharactersListView: View {
     @EnvironmentObject var viewModel: CharacterListViewModel
+    
+    private let verticalGridlayout = [GridItem(.flexible()), GridItem(.flexible())]
 
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Response check! Count is \(viewModel.characterResponseData?.count.description ?? "0")")
+        LazyVGrid(columns: verticalGridlayout, spacing: 10) {
+            if let list = viewModel.charactersList {
+                ForEach(list) { character in
+                    CharactersListItemView(item: character)
+                }
+            } else {
+                ProgressView()
+            }
+            
         }
-        .padding()
     }
 }
 

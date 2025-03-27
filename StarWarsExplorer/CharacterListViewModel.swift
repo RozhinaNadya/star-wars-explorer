@@ -9,7 +9,9 @@ import Combine
 import Foundation
 
 class CharacterListViewModel: ObservableObject {
-    @Published var characterResponseData: CharactersResponseData?
+    @Published var character: Character?
+    @Published var charactersList: [CharacterListItem]?
+    @Published var nextPage: String?
     
     private var cancellables = Set<AnyCancellable>()
     
@@ -20,8 +22,11 @@ class CharacterListViewModel: ObservableObject {
     func getCharactersData() {
         CharactersAPIService.shared.getCharactersData()
             .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { _ in }, receiveValue: {
-                self.characterResponseData = $0
+            .sink(receiveCompletion: { _ in }, receiveValue: { response in
+                self.nextPage = response.next                
+                self.charactersList = response.results.map { character in
+                    CharacterListItem(name: character.name, filmTitles: character.films)
+                }
             }).store(in: &cancellables)
     }
     
