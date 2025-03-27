@@ -2,7 +2,7 @@
 //  StarWarsExplorerUITests.swift
 //  StarWarsExplorerUITests
 //
-//  Created by Rozhina,Nadya on 2025-03-27.
+//  Created by Nadya Rozhina on 2025-03-27.
 //
 
 import XCTest
