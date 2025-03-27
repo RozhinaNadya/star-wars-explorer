@@ -9,6 +9,7 @@ import Foundation
 
 enum ResponseError: LocalizedError {
     case decodeCharactersDataError
+    case invalidURL
     
     // TODO: add errorDescription
 }

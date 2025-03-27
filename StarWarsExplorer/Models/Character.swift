@@ -11,7 +11,7 @@ struct CharactersResponseData: Codable {
     let count: Int
     let next: String?
     let previous: String?
-    let results: [Character]
+    var results: [Character]
 }
 
 struct Character: Codable {
@@ -19,8 +19,8 @@ struct Character: Codable {
     let height: String
     let birthYear: String
     let gender: String
-    let homeworld: String
-    let films: [String]
+    var homeworld: String
+    var films: [String]
     
     enum CodingKeys: String, CodingKey {
         case name, height, gender, homeworld, films
