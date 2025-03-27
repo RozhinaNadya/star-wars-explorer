@@ -1,0 +1,64 @@
+# Xcode
+.DS_Store
+UserInterfaceState.xcuserstate
+xcuserdata/
+xcshareddata/
+*.xccheckout
+*.xcscmblueprint
+
+# Swift Package Manager
+/.build/
+/Packages/
+.swiftpm/
+
+# CocoaPods
+Pods/
+Podfile.lock
+
+# Carthage
+Carthage/Build/
+
+# Derived Data & Index
+DerivedData/
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Build artifacts
+*.o
+*.a
+*.so
+*.swp
+*.swo
+*.swn
+*.ll
+*.lo
+*.dylib
+*.out
+*.d
+
+# Playgrounds
+timeline.xctimeline
+playground.xcworkspace/
+
+# Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/
+fastlane/test_output/
+
+# SwiftLint & SwiftFormat
+.swiftlint.yml
+.swiftformat
+
+# Temporary files
+*.tmp
+*.log
+*.swp
+*.mode1v3
+*.pbxuser
+
+# Other IDEs
+.idea/
+.vscode/
