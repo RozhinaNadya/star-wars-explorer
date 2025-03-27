@@ -29,9 +29,40 @@
 		5820C32E2D95BFDA002BC9EB /* StarWarsExplorerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StarWarsExplorerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		5820C3452D95C1E2002BC9EB /* Exceptions for "StarWarsExplorer" folder in "StarWarsExplorerTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				CharacterDetailsViewModel.swift,
+				CharacterListViewModel.swift,
+				Common/ErrorAlerts.swift,
+				Models/Character.swift,
+				Models/CharacterListItem.swift,
+				Sources/CharactersAPIService.swift,
+			);
+			target = 5820C3232D95BFDA002BC9EB /* StarWarsExplorerTests */;
+		};
+		5820C3462D95C1E2002BC9EB /* Exceptions for "StarWarsExplorer" folder in "StarWarsExplorerUITests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				CharacterDetailsViewModel.swift,
+				CharacterListViewModel.swift,
+				Common/ErrorAlerts.swift,
+				Models/Character.swift,
+				Models/CharacterListItem.swift,
+				Sources/CharactersAPIService.swift,
+			);
+			target = 5820C32D2D95BFDA002BC9EB /* StarWarsExplorerUITests */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		5820C3152D95BFD9002BC9EB /* StarWarsExplorer */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				5820C3452D95C1E2002BC9EB /* Exceptions for "StarWarsExplorer" folder in "StarWarsExplorerTests" target */,
+				5820C3462D95C1E2002BC9EB /* Exceptions for "StarWarsExplorer" folder in "StarWarsExplorerUITests" target */,
+			);
 			path = StarWarsExplorer;
 			sourceTree = "<group>";
 		};
