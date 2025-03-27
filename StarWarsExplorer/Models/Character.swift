@@ -1,5 +1,5 @@
 //
-//  CharacterModel.swift
+//  Character.swift
 //  StarWarsExplorer
 //
 //  Created by Nadya Rozhina on 2025-03-27.
