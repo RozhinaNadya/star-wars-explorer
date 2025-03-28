@@ -13,8 +13,9 @@ struct DetailView: View {
     var body: some View {
         ZStack {
             Circle()
-                .fill(Color.black)
+                .fill(Color.black.opacity(0.9))
                 .frame(width: 100, height: 100)
+                .shadow(color: .white, radius: 5)
             VStack {
                 Text(detail.title)
                     .font(.system(size: 16))

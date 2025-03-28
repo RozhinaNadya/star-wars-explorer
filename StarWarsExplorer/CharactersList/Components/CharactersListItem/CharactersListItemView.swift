@@ -14,7 +14,8 @@ struct CharactersListItemView: View {
         HStack {
             Text(item.name)
                 .frame(maxWidth: .infinity, alignment: .center)
-                .font(.system(size: 14))
+                .font(.system(size: 16))
+                .bold()
             Divider()
                 .background(Color.black)
                 .frame(height: 40)
@@ -25,7 +26,7 @@ struct CharactersListItemView: View {
         }
         .padding(10)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(.yellow)
+        .background(.white.opacity(0.7))
         .cornerRadius(10)
     }
 }

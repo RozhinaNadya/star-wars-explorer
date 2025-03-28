@@ -19,7 +19,7 @@ struct CharacterDetailsView: View {
                     .foregroundColor(.black.opacity(0.7))
             }
             .font(.system(size: 24))
-            .padding(.vertical, 20)
+            .padding(20)
 
             LazyHGrid(rows: [GridItem(.flexible())]) {
                 ForEach(viewModel.details) { item in
