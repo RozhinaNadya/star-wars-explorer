@@ -12,3 +12,9 @@ struct CharacterListItem: Identifiable {
     var name: String
     var filmTitles: [String]
 }
+
+struct Detail: Identifiable {
+    var id = UUID()
+    var title: String
+    var value: String
+}
