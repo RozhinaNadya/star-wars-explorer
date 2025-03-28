@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 protocol ICharactersAPIService {
-    func getCharactersData() -> AnyPublisher<CharactersResponseData, Error>
+    func getCharactersData(url: String) -> AnyPublisher<CharactersResponseData, Error>
 }
 
 struct Homeworld: Codable {
@@ -24,24 +24,24 @@ class CharactersAPIService: ICharactersAPIService {
     static let shared = CharactersAPIService()
     private init() { }
 
-    func getCharactersData() -> AnyPublisher<CharactersResponseData, Error> {
-        guard let url = URL(string: .initialUrl) else { fatalError("Something wrong with URL") }
+    func getCharactersData(url: String) -> AnyPublisher<CharactersResponseData, Error> {
+            guard let url = URL(string: url) else { fatalError("Invalid URL") }
 
-        let urlRequest = URLRequest(url: url)
+            let urlRequest = URLRequest(url: url)
 
-        return Future { promise in
-            Task {
-                do {
-                    let (data, response) = try await URLSession.shared.data(for: urlRequest)
-                    let charactersData = try await self.decodeCharactersData(response: response, data: data)
-                    promise(.success(charactersData))
-                } catch {
-                    promise(.failure(error))
+            return Future { promise in
+                Task {
+                    do {
+                        let (data, response) = try await URLSession.shared.data(for: urlRequest)
+                        let charactersData = try await self.decodeCharactersData(response: response, data: data)
+                        promise(.success(charactersData))
+                    } catch {
+                        promise(.failure(error))
+                    }
                 }
             }
+            .eraseToAnyPublisher()
         }
-        .eraseToAnyPublisher()
-    }
 
     private func decodeCharactersData(response: URLResponse, data: Data?) async throws -> CharactersResponseData {
         guard let data else { throw ResponseError.decodeCharactersDataError }
@@ -53,7 +53,7 @@ class CharactersAPIService: ICharactersAPIService {
             for character in charactersData.results {
                 group.addTask {
                     do {
-                        let homeworldName = character.homeworld != nil ? try await self.fetchHomeworldName(from: character.homeworld) : "unknown"
+                        let homeworldName = try await self.fetchHomeworldName(from: character.homeworld)
                         let filmTitles = try await self.fetchFilmTitles(from: character.films)
 
                         return Character(
@@ -102,6 +102,6 @@ class CharactersAPIService: ICharactersAPIService {
     }
 }
 
-private extension String {
+ extension String {
     static let initialUrl = "https://swapi.dev/api/people/"
 }

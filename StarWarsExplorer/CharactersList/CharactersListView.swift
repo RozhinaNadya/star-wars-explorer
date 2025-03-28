@@ -19,15 +19,25 @@ struct CharactersListView: View {
             Image("background")
                 .resizable()
                 .ignoresSafeArea()
-            if let list = viewModel.characters {
+            if viewModel.characters.isEmpty {
+                ProgressView()
+                    .tint(Color.white)
+            } else {
                 ScrollView {
                     LazyVGrid(columns: verticalGridlayout, spacing: 10) {
-                        ForEach(list) { character in
+                        ForEach(Array(viewModel.characters.enumerated()), id: \.element.id) { index, character in
                             CharactersListItemView(item: viewModel.getListItem(character: character))
+                                .onAppear {
+                                    viewModel.loadMoreCharactersIfNeeded(currentIndex: index)
+                                }
                                 .onTapGesture {
                                     selectedCharacter = character
                                     isShowingDetail = true
                                 }
+                        }
+                        if viewModel.isLoadingMore {
+                            ProgressView()
+                                .tint(Color.white)
                         }
                     }
                     .padding(.horizontal, 10)
@@ -44,9 +54,6 @@ struct CharactersListView: View {
                         isShowingDetail = true
                     }
                 }
-            } else {
-                ProgressView()
-                    .tint(Color.white)
             }
         }
     }
