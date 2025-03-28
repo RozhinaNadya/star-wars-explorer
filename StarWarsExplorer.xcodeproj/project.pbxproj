@@ -33,9 +33,9 @@
 		5820C3452D95C1E2002BC9EB /* Exceptions for "StarWarsExplorer" folder in "StarWarsExplorerTests" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				CharacterDetailsViewModel.swift,
-				CharacterListViewModel.swift,
-				CharactersListItemView.swift,
+				CharactersList/CharacterListViewModel.swift,
+				CharactersList/Components/CharacterDetails/CharacterDetailsViewModel.swift,
+				CharactersList/Components/CharactersListItem/CharactersListItemView.swift,
 				Common/ErrorAlerts.swift,
 				Models/Character.swift,
 				Models/CharacterListItem.swift,
@@ -46,9 +46,9 @@
 		5820C3462D95C1E2002BC9EB /* Exceptions for "StarWarsExplorer" folder in "StarWarsExplorerUITests" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				CharacterDetailsViewModel.swift,
-				CharacterListViewModel.swift,
-				CharactersListItemView.swift,
+				CharactersList/CharacterListViewModel.swift,
+				CharactersList/Components/CharacterDetails/CharacterDetailsViewModel.swift,
+				CharactersList/Components/CharactersListItem/CharactersListItemView.swift,
 				Common/ErrorAlerts.swift,
 				Models/Character.swift,
 				Models/CharacterListItem.swift,

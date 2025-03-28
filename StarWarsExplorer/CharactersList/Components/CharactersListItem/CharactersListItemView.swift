@@ -13,9 +13,19 @@ struct CharactersListItemView: View {
     var body: some View {
         HStack {
             Text(item.name)
-            Spacer()
+                .frame(maxWidth: .infinity, alignment: .center)
+                .font(.system(size: 14))
+            Divider()
+                .frame(height: 40)
             Text(item.filmTitles.joined(separator: ", "))
+                .padding(.leading,10)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .font(.system(size: 12))
         }
+        .padding(10)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color.blue.opacity(0.1))
+        .cornerRadius(10)
     }
 }
 
