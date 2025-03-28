@@ -34,6 +34,7 @@ struct CharactersListView: View {
         .sheet(isPresented: $isShowingDetail) {
             if let selectedCharacter = selectedCharacter {
                 CharacterDetailsView(viewModel: CharacterDetailsViewModel(character: selectedCharacter))
+                    .presentationDetents([.fraction(0.4)])
             }
         }
         .onChange(of: selectedCharacter) {

@@ -12,13 +12,15 @@ struct CharacterDetailsView: View {
 
     var body: some View {
         VStack {
-            Text(viewModel.character.name)
-                .font(.system(size: 24))
-                .bold()
-            Text(viewModel.character.homeworld)
-                .foregroundColor(.black.opacity(0.8))
-                .font(.system(size: 24))
-                .padding(.top, 3)
+            VStack {
+                Text(viewModel.character.name)
+                    .bold()
+                Text(viewModel.character.homeworld)
+                    .foregroundColor(.black.opacity(0.7))
+            }
+            .font(.system(size: 24))
+            .padding(.vertical, 20)
+
             LazyHGrid(rows: [GridItem(.flexible())]) {
                 ForEach(viewModel.details) { item in
                     DetailView(detail: item)
