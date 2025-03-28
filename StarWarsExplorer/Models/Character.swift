@@ -14,7 +14,8 @@ struct CharactersResponseData: Codable {
     var results: [Character]
 }
 
-struct Character: Codable {
+struct Character: Identifiable, Codable {
+    var id = UUID()
     let name: String
     let height: String
     let birthYear: String

@@ -15,9 +15,9 @@ struct CharactersListView: View {
     var body: some View {
         ScrollView {
             LazyVGrid(columns: verticalGridlayout, spacing: 10) {
-                if let list = viewModel.charactersList {
-                    ForEach(list) { character in
-                        CharactersListItemView(item: character)
+                if let list = viewModel.characters {
+                    ForEach(list) { item in
+                        CharactersListItemView(item: viewModel.getListItem(character: item))
                     }
                 } else {
                     ProgressView()
