@@ -24,24 +24,27 @@ class CharactersAPIService: ICharactersAPIService {
     static let shared = CharactersAPIService()
     private init() { }
 
+    private var homeworldCache = [String: String]()
+    private var filmCache = [String: String]()
+
     func getCharactersData(url: String) -> AnyPublisher<CharactersResponseData, Error> {
-            guard let url = URL(string: url) else { fatalError("Invalid URL") }
+        guard let url = URL(string: url) else { fatalError("Invalid URL") }
 
-            let urlRequest = URLRequest(url: url)
+        let urlRequest = URLRequest(url: url)
 
-            return Future { promise in
-                Task {
-                    do {
-                        let (data, response) = try await URLSession.shared.data(for: urlRequest)
-                        let charactersData = try await self.decodeCharactersData(response: response, data: data)
-                        promise(.success(charactersData))
-                    } catch {
-                        promise(.failure(error))
-                    }
+        return Future { promise in
+            Task {
+                do {
+                    let (data, response) = try await URLSession.shared.data(for: urlRequest)
+                    let charactersData = try await self.decodeCharactersData(response: response, data: data)
+                    promise(.success(charactersData))
+                } catch {
+                    promise(.failure(error))
                 }
             }
-            .eraseToAnyPublisher()
         }
+        .eraseToAnyPublisher()
+    }
 
     private func decodeCharactersData(response: URLResponse, data: Data?) async throws -> CharactersResponseData {
         guard let data else { throw ResponseError.decodeCharactersDataError }
@@ -53,8 +56,8 @@ class CharactersAPIService: ICharactersAPIService {
             for character in charactersData.results {
                 group.addTask {
                     do {
-                        let homeworldName = try await self.fetchHomeworldName(from: character.homeworld)
-                        let filmTitles = try await self.fetchFilmTitles(from: character.films)
+                        let homeworldName = try await self.getCachedHomeworldName(from: character.homeworld)
+                        let filmTitles = try await self.getCachedFilmTitles(from: character.films)
 
                         return Character(
                             name: character.name,
@@ -81,27 +84,35 @@ class CharactersAPIService: ICharactersAPIService {
         return charactersData
     }
 
-    private func fetchHomeworldName(from url: String) async throws -> String {
-        guard let url = URL(string: url) else { throw ResponseError.invalidURL }
-        let (data, _) = try await URLSession.shared.data(from: url)
+    private func getCachedHomeworldName(from url: String) async throws -> String {
+        if let cachedName = homeworldCache[url] {
+            return cachedName
+        }
+        
+        guard let dataUrl = URL(string: url) else { throw ResponseError.invalidURL }
+        let (data, _) = try await URLSession.shared.data(from: dataUrl)
         let homeworld = try JSONDecoder().decode(Homeworld.self, from: data)
+
+        homeworldCache[url] = homeworld.name  // Cache result
         return homeworld.name
     }
 
-    private func fetchFilmTitles(from urls: [String]) async throws -> [String] {
+    private func getCachedFilmTitles(from urls: [String]) async throws -> [String] {
         var titles: [String] = []
 
         for url in urls {
-            guard let url = URL(string: url) else { continue }
-            let (data, _) = try await URLSession.shared.data(from: url)
-            let film = try JSONDecoder().decode(Film.self, from: data)
-            titles.append(film.title)
+            if let cachedTitle = filmCache[url] {
+                titles.append(cachedTitle)
+            } else {
+                guard let dataUrl = URL(string: url) else { continue }
+                let (data, _) = try await URLSession.shared.data(from: dataUrl)
+                let film = try JSONDecoder().decode(Film.self, from: data)
+
+                filmCache[url] = film.title  // Cache result
+                titles.append(film.title)
+            }
         }
 
         return titles
     }
-}
-
- extension String {
-    static let initialUrl = "https://swapi.dev/api/people/"
 }

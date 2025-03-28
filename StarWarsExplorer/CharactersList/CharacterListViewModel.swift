@@ -14,19 +14,21 @@ class CharacterListViewModel: ObservableObject {
     @Published var isLoadingMore = false
 
     private var cancellables = Set<AnyCancellable>()
-    private let minItemsToLoadMore = 5
+    private var fetchedPages = Set<String>() // Cache for fetched pages
 
     init() {
-        getCharactersData()
+        getCharactersData(url: .initialUrl)
     }
 
     func getListItem(character: Character) -> CharacterListItem {
         CharacterListItem(name: character.name, filmTitles: character.films)
     }
 
-    func getCharactersData(url: String = .initialUrl) {
+    func getCharactersData(url: String) {
+        let fetchUrl = url
         guard !isLoadingMore else { return }
         isLoadingMore = true
+        fetchedPages.insert(fetchUrl)
 
         CharactersAPIService.shared.getCharactersData(url: url)
             .receive(on: DispatchQueue.main)
@@ -41,11 +43,19 @@ class CharacterListViewModel: ObservableObject {
     }
 
     func loadMoreCharactersIfNeeded(currentIndex: Int) {
-        let thresholdIndex = characters.count - minItemsToLoadMore
+        let thresholdIndex = characters.count - .minItemsToLoadMore
             guard currentIndex >= thresholdIndex, !isLoadingMore else { return }
 
         if let nextPage = nextPage {
             getCharactersData(url: nextPage)
         }
     }
+}
+
+private extension String {
+    static let initialUrl = "https://swapi.dev/api/people/"
+}
+
+private extension Int {
+    static let minItemsToLoadMore = 3
 }
