@@ -23,24 +23,36 @@ struct CharactersListView: View {
                 ProgressView()
                     .tint(Color.white)
             } else {
-                ScrollView {
-                    LazyVGrid(columns: verticalGridlayout, spacing: 10) {
-                        ForEach(Array(viewModel.characters.enumerated()), id: \.element.id) { index, character in
-                            CharactersListItemView(item: viewModel.getListItem(character: character))
-                                .onAppear {
-                                    viewModel.loadMoreCharactersIfNeeded(currentIndex: index)
-                                }
-                                .onTapGesture {
-                                    selectedCharacter = character
-                                    isShowingDetail = true
-                                }
-                        }
-                        if viewModel.isLoadingMore {
-                            ProgressView()
-                                .tint(Color.white)
-                        }
+                VStack {
+                    VStack{
+                        Text("Star Wars Explorer")
+                            .font(.largeTitle)
+                            .foregroundColor(.white)
+                        Text("Tap to learn more about a character")
+                            .foregroundColor(.white.opacity(0.7))
+                            .font(.subheadline)
                     }
-                    .padding(.horizontal, 10)
+                    .padding(.bottom, 16)
+                    
+                    ScrollView {
+                        LazyVGrid(columns: verticalGridlayout, spacing: 10) {
+                            ForEach(Array(viewModel.characters.enumerated()), id: \.element.id) { index, character in
+                                CharactersListItemView(item: viewModel.getListItem(character: character))
+                                    .onAppear {
+                                        viewModel.loadMoreCharactersIfNeeded(currentIndex: index)
+                                    }
+                                    .onTapGesture {
+                                        selectedCharacter = character
+                                        isShowingDetail = true
+                                    }
+                            }
+                            if viewModel.isLoadingMore {
+                                ProgressView()
+                                    .tint(Color.white)
+                            }
+                        }
+                        .padding(.horizontal, 10)
+                    }
                 }
                 .sheet(isPresented: $isShowingDetail) {
                     if let selectedCharacter = selectedCharacter {
@@ -49,7 +61,7 @@ struct CharactersListView: View {
                     }
                 }
                 .onChange(of: selectedCharacter) {
-                    // Ensure that selectedCharacter is updated to do not show empty modalView
+                    // Ensure that selectedCharacter is updated to do not present an empty sheet
                     if selectedCharacter != nil {
                         isShowingDetail = true
                     }
