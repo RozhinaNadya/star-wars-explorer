@@ -16,6 +16,7 @@ struct CharactersListItemView: View {
                 .frame(maxWidth: .infinity, alignment: .center)
                 .font(.system(size: 14))
             Divider()
+                .background(Color.black)
                 .frame(height: 40)
             Text(item.filmTitles.joined(separator: ", "))
                 .padding(.leading,10)
@@ -24,7 +25,7 @@ struct CharactersListItemView: View {
         }
         .padding(10)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Color.blue.opacity(0.1))
+        .background(.yellow)
         .cornerRadius(10)
     }
 }
