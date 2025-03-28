@@ -22,6 +22,7 @@ struct CharacterDetailsView: View {
             LazyHGrid(rows: [GridItem(.flexible())]) {
                 ForEach(viewModel.details) { item in
                     DetailView(detail: item)
+                        .padding(.horizontal, 10)
                 }
             }
             .padding(.horizontal, 10)
