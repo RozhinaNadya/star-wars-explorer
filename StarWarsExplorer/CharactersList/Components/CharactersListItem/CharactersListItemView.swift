@@ -19,7 +19,7 @@ struct CharactersListItemView: View {
             Divider()
                 .background(Color.black)
                 .frame(height: 40)
-            Text(item.filmTitles.joined(separator: ", "))
+            Text(item.filmTitles.joined(separator: "\n"))
                 .padding(.leading,10)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .font(.system(size: 12))
