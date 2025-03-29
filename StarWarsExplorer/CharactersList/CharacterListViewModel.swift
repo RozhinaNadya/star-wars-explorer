@@ -22,6 +22,7 @@ class CharacterListViewModel: ObservableObject {
 
     init() {
         getCharactersData(url: .initialUrl)
+        setupSearchSubscription()
     }
 
     func getListItem(character: Character) -> CharacterListItem {
@@ -53,6 +54,15 @@ class CharacterListViewModel: ObservableObject {
         characters = []
         let searchUrl = .initialUrl + .searchPath + searchQuery
         getCharactersData(url: searchUrl)
+    }
+
+    private func setupSearchSubscription() {
+        $searchQuery
+                .debounce(for: .milliseconds(300), scheduler: DispatchQueue.main)
+                .sink { [weak self] newValue in
+                    self?.searchCharacters()
+                }
+                .store(in: &cancellables)
     }
 
     func loadMoreCharactersIfNeeded(currentIndex: Int) {

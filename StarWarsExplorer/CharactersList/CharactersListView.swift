@@ -41,9 +41,7 @@ struct CharactersListView: View {
                             ProgressView()
                                 .tint(.white)
                                 .padding(.vertical, 20)
-                        }
-                        
-                        if viewModel.showEndOfList {
+                        } else if viewModel.showEndOfList {
                             endOfList
                                 .padding(.vertical, 20)
                         }
@@ -90,9 +88,6 @@ struct CharactersListView: View {
         .padding(.vertical, 6)
         .foregroundColor(.white)
         .overlay(RoundedRectangle(cornerRadius: 10).stroke(.white, lineWidth: 1))
-        .onChange(of: viewModel.searchQuery) {
-            viewModel.searchCharacters()
-        }
     }
 
     private var charactersList: some View {
