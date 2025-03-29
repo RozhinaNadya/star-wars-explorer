@@ -12,6 +12,7 @@ class CharacterListViewModel: ObservableObject {
     @Published var characters: [Character] = []
     @Published var nextPage: String?
     @Published var isLoadingMore = false
+    @Published var isFirstLoad = true
     @Published var searchQuery = ""
 
     private var cancellables = Set<AnyCancellable>()
@@ -38,6 +39,7 @@ class CharacterListViewModel: ObservableObject {
             }, receiveValue: { response in
                 self.nextPage = response.next
                 self.characters.append(contentsOf: response.results)
+                self.isFirstLoad = false
                 self.isLoadingMore = false
             })
             .store(in: &cancellables)
