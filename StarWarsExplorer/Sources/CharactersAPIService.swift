@@ -22,10 +22,11 @@ struct Film: Codable {
 
 class CharactersAPIService: ICharactersAPIService {
     static let shared = CharactersAPIService()
-    private init() { }
-
+    private let cacheQueue = DispatchQueue(label: "CharactersAPIService.CacheQueue") // Serial Queue for thread safety
     private var homeworldCache = [String: String]()
     private var filmCache = [String: String]()
+    
+    init() {}
 
     func getCharactersData(url: String) -> AnyPublisher<CharactersResponseData, Error> {
         guard let url = URL(string: url) else { fatalError("Invalid URL") }
@@ -85,7 +86,7 @@ class CharactersAPIService: ICharactersAPIService {
     }
 
     private func getCachedHomeworldName(from url: String) async throws -> String {
-        if let cachedName = homeworldCache[url] {
+        if let cachedName = cacheQueue.sync(execute: { homeworldCache[url] }) {
             return cachedName
         }
         
@@ -93,7 +94,10 @@ class CharactersAPIService: ICharactersAPIService {
         let (data, _) = try await URLSession.shared.data(from: dataUrl)
         let homeworld = try JSONDecoder().decode(Homeworld.self, from: data)
 
-        homeworldCache[url] = homeworld.name  // Cache result
+        cacheQueue.sync {
+            homeworldCache[url] = homeworld.name
+        }
+
         return homeworld.name
     }
 
@@ -101,14 +105,16 @@ class CharactersAPIService: ICharactersAPIService {
         var titles: [String] = []
 
         for url in urls {
-            if let cachedTitle = filmCache[url] {
+            if let cachedTitle = cacheQueue.sync(execute: { filmCache[url] }) {
                 titles.append(cachedTitle)
             } else {
                 guard let dataUrl = URL(string: url) else { continue }
                 let (data, _) = try await URLSession.shared.data(from: dataUrl)
                 let film = try JSONDecoder().decode(Film.self, from: data)
 
-                filmCache[url] = film.title  // Cache result
+                cacheQueue.sync {
+                    filmCache[url] = film.title
+                }
                 titles.append(film.title)
             }
         }
