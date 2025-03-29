@@ -22,12 +22,8 @@ struct Film: Codable {
 
 class CharactersAPIService: ICharactersAPIService {
     static let shared = CharactersAPIService()
-    private let cacheQueue = DispatchQueue(label: "CharactersAPIService.CacheQueue") // Serial Queue for thread safety
-    private var homeworldCache = [String: String]()
-    private var filmCache = [String: String]()
+    private let cacheManager = CacheManager()
     
-    init() {}
-
     func getCharactersData(url: String) -> AnyPublisher<CharactersResponseData, Error> {
         guard let url = URL(string: url) else { fatalError("Invalid URL") }
 
@@ -57,8 +53,8 @@ class CharactersAPIService: ICharactersAPIService {
             for character in charactersData.results {
                 group.addTask {
                     do {
-                        let homeworldName = try await self.getCachedHomeworldName(from: character.homeworld)
-                        let filmTitles = try await self.getCachedFilmTitles(from: character.films)
+                        let homeworldName = try await self.getHomeworldName(from: character.homeworld)
+                        let filmTitles = try await self.getFilmTitles(from: character.films)
 
                         return Character(
                             name: character.name,
@@ -85,8 +81,8 @@ class CharactersAPIService: ICharactersAPIService {
         return charactersData
     }
 
-    private func getCachedHomeworldName(from url: String) async throws -> String {
-        if let cachedName = cacheQueue.sync(execute: { homeworldCache[url] }) {
+    private func getHomeworldName(from url: String) async throws -> String {
+        if let cachedName = cacheManager.getHomeworldName(for: url) {
             return cachedName
         }
         
@@ -94,27 +90,22 @@ class CharactersAPIService: ICharactersAPIService {
         let (data, _) = try await URLSession.shared.data(from: dataUrl)
         let homeworld = try JSONDecoder().decode(Homeworld.self, from: data)
 
-        cacheQueue.sync {
-            homeworldCache[url] = homeworld.name
-        }
-
+        cacheManager.setHomeworldName(homeworld.name, for: url)
         return homeworld.name
     }
 
-    private func getCachedFilmTitles(from urls: [String]) async throws -> [String] {
+    private func getFilmTitles(from urls: [String]) async throws -> [String] {
         var titles: [String] = []
 
         for url in urls {
-            if let cachedTitle = cacheQueue.sync(execute: { filmCache[url] }) {
+            if let cachedTitle = cacheManager.getFilmTitles(for: url) {
                 titles.append(cachedTitle)
             } else {
                 guard let dataUrl = URL(string: url) else { continue }
                 let (data, _) = try await URLSession.shared.data(from: dataUrl)
                 let film = try JSONDecoder().decode(Film.self, from: data)
 
-                cacheQueue.sync {
-                    filmCache[url] = film.title
-                }
+                cacheManager.setFilmTitle(film.title, for: url)
                 titles.append(film.title)
             }
         }

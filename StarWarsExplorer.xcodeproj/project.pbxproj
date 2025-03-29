@@ -41,6 +41,7 @@
 				Common/ErrorAlerts.swift,
 				Models/Character.swift,
 				Models/CharacterListItem.swift,
+				Sources/CacheManager.swift,
 				Sources/CharactersAPIService.swift,
 			);
 			target = 5820C3232D95BFDA002BC9EB /* StarWarsExplorerTests */;
@@ -56,6 +57,7 @@
 				Common/ErrorAlerts.swift,
 				Models/Character.swift,
 				Models/CharacterListItem.swift,
+				Sources/CacheManager.swift,
 				Sources/CharactersAPIService.swift,
 			);
 			target = 5820C32D2D95BFDA002BC9EB /* StarWarsExplorerUITests */;
