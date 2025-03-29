@@ -58,11 +58,11 @@ class CharacterListViewModel: ObservableObject {
 
     private func setupSearchSubscription() {
         $searchQuery
-                .debounce(for: .milliseconds(300), scheduler: DispatchQueue.main)
-                .sink { [weak self] newValue in
-                    self?.searchCharacters()
-                }
-                .store(in: &cancellables)
+            .debounce(for: .milliseconds(300), scheduler: DispatchQueue.main)
+            .sink { [weak self] newValue in
+                self?.searchCharacters()
+            }
+            .store(in: &cancellables)
     }
 
     func loadMoreCharactersIfNeeded(currentIndex: Int) {
