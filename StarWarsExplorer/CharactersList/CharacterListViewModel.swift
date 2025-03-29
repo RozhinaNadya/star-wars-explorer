@@ -47,7 +47,6 @@ class CharacterListViewModel: ObservableObject {
 
     func searchCharacters() {
         characters = []
-        fetchedPages.removeAll()
         let searchUrl = .initialUrl + .searchPath + searchQuery
         getCharactersData(url: searchUrl)
     }
