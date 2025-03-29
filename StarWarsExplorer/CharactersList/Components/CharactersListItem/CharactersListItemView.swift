@@ -9,6 +9,7 @@ import SwiftUI
 
 struct CharactersListItemView: View {
     var item: CharacterListItem
+    let isSelected: Bool
     
     var body: some View {
         HStack {
@@ -26,12 +27,12 @@ struct CharactersListItemView: View {
         }
         .padding(10)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(.white.opacity(0.7))
+        .background(isSelected ? .white : .white.opacity(0.7))
         .cornerRadius(10)
     }
 }
 
 #Preview {
     let character = CharacterListItem(name: "Anakin Skywalker", filmTitles: ["film1", "film2", "film3", "film4", "film5", "film1", "film2", "film3", "film4", "film5"])
-    CharactersListItemView(item: character)
+    CharactersListItemView(item: character, isSelected: false)
 }

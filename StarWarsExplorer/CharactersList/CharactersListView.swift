@@ -48,7 +48,7 @@ struct CharactersListView: View {
                     }
                 }
                 .padding(.horizontal, 10)
-                .sheet(isPresented: $isShowingDetail) {
+                .sheet(isPresented: $isShowingDetail, onDismiss: { selectedCharacter = nil }) {
                     if let selectedCharacter = selectedCharacter {
                         CharacterDetailsView(viewModel: CharacterDetailsViewModel(character: selectedCharacter))
                             .presentationDetents([.fraction(0.4)])
@@ -93,7 +93,9 @@ struct CharactersListView: View {
     private var charactersList: some View {
         LazyVGrid(columns: verticalGridlayout, spacing: 10) {
             ForEach(Array(viewModel.characters.enumerated()), id: \.element.id) { index, character in
-                CharactersListItemView(item: viewModel.getListItem(character: character))
+                CharactersListItemView(
+                    item: viewModel.getListItem(character: character),
+                    isSelected: selectedCharacter == character)
                     .onAppear {
                         viewModel.loadMoreCharactersIfNeeded(currentIndex: index)
                     }

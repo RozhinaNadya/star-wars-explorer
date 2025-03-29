@@ -74,16 +74,6 @@
 			path = StarWarsExplorer;
 			sourceTree = "<group>";
 		};
-		5820C3272D95BFDA002BC9EB /* StarWarsExplorerTests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = StarWarsExplorerTests;
-			sourceTree = "<group>";
-		};
-		5820C3312D95BFDA002BC9EB /* StarWarsExplorerUITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = StarWarsExplorerUITests;
-			sourceTree = "<group>";
-		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,8 +105,6 @@
 			isa = PBXGroup;
 			children = (
 				5820C3152D95BFD9002BC9EB /* StarWarsExplorer */,
-				5820C3272D95BFDA002BC9EB /* StarWarsExplorerTests */,
-				5820C3312D95BFDA002BC9EB /* StarWarsExplorerUITests */,
 				5820C3142D95BFD9002BC9EB /* Products */,
 			);
 			sourceTree = "<group>";
@@ -169,9 +157,6 @@
 			dependencies = (
 				5820C3262D95BFDA002BC9EB /* PBXTargetDependency */,
 			);
-			fileSystemSynchronizedGroups = (
-				5820C3272D95BFDA002BC9EB /* StarWarsExplorerTests */,
-			);
 			name = StarWarsExplorerTests;
 			packageProductDependencies = (
 			);
@@ -191,9 +176,6 @@
 			);
 			dependencies = (
 				5820C3302D95BFDA002BC9EB /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				5820C3312D95BFDA002BC9EB /* StarWarsExplorerUITests */,
 			);
 			name = StarWarsExplorerUITests;
 			packageProductDependencies = (
