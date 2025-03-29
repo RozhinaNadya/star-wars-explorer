@@ -12,6 +12,7 @@ class CharacterListViewModel: ObservableObject {
     @Published var characters: [Character] = []
     @Published var nextPage: String?
     @Published var isLoadingMore = false
+    @Published var searchQuery = ""
 
     private var cancellables = Set<AnyCancellable>()
     private var fetchedPages = Set<String>() // Cache for fetched pages
@@ -42,6 +43,13 @@ class CharacterListViewModel: ObservableObject {
             .store(in: &cancellables)
     }
 
+    func searchCharacters() {
+        characters = []
+        fetchedPages.removeAll()
+        let searchUrl = .initialUrl + .searchPath + searchQuery
+        getCharactersData(url: searchUrl)
+    }
+
     func loadMoreCharactersIfNeeded(currentIndex: Int) {
         let thresholdIndex = characters.count - .minItemsToLoadMore
             guard currentIndex >= thresholdIndex, !isLoadingMore else { return }
@@ -54,6 +62,7 @@ class CharacterListViewModel: ObservableObject {
 
 private extension String {
     static let initialUrl = "https://swapi.dev/api/people/"
+    static let searchPath = "?search="
 }
 
 private extension Int {
