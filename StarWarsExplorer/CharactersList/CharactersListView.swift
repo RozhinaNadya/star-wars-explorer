@@ -50,6 +50,11 @@ struct CharactersListView: View {
                                 ProgressView()
                                     .tint(Color.white)
                             }
+                            if viewModel.nextPage == nil {
+                                Text("May the force be with you 💫")
+                                    .font(.callout)
+                                    .foregroundStyle(Color.white.opacity(0.8))
+                            }
                         }
                         .padding(.horizontal, 10)
                     }
