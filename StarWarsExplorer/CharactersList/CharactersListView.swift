@@ -29,22 +29,23 @@ struct CharactersListView: View {
                     
                     starWarsSearchBar
                         .padding(.bottom, 10)
+                    
+                    if viewModel.showEmptyResult {
+                        emptySearchResult
+                    }
 
-                    if viewModel.characters.isEmpty {
-                        ProgressView()
-                            .tint(Color.white)
-                        Spacer()
-                    } else {
-                        ScrollView {
-                            charactersList
+                    ScrollView {
+                        charactersList
 
-                            if viewModel.isLoadingMore {
-                                ProgressView()
-                                    .tint(.white)
-                            } else if viewModel.nextPage == nil {
-                                endOfList
-                                    .padding(.vertical, 20)
-                            }
+                        if viewModel.isLoadingMore {
+                            ProgressView()
+                                .tint(.white)
+                                .padding(.vertical, 20)
+                        }
+                        
+                        if viewModel.showEndOfList {
+                            endOfList
+                                .padding(.vertical, 20)
                         }
                     }
                 }
@@ -105,6 +106,30 @@ struct CharactersListView: View {
                         selectedCharacter = character
                     }
             }
+        }
+    }
+    
+    private var emptySearchResult: some View {
+        VStack (alignment: .center) {
+            ZStack {
+                Rectangle()
+                    .frame(width: 250, height: 250)
+                    .cornerRadius(100)
+                    .blur(radius: 10)
+
+                Image("noResult")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 200, height: 200)
+                    .cornerRadius(100)
+
+            }
+            .padding(.bottom, 20)
+
+            Text("Find anyone with that name, I could not, on any planet in the Galaxy, sorry 🥺")
+                .foregroundColor(.white.opacity(0.8))
+                .font(.subheadline)
+                .multilineTextAlignment(.center)
         }
     }
 

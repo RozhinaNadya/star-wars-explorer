@@ -10,10 +10,12 @@ import Foundation
 
 class CharacterListViewModel: ObservableObject {
     @Published var characters: [Character] = []
-    @Published var nextPage: String?
+    @Published var showEmptyResult = false
     @Published var isLoadingMore = false
     @Published var isFirstLoad = true
     @Published var searchQuery = ""
+    @Published var showEndOfList = false
+    var nextPage: String?
 
     private var cancellables = Set<AnyCancellable>()
     private var fetchedPages = Set<String>() // Cache for fetched pages
@@ -41,6 +43,8 @@ class CharacterListViewModel: ObservableObject {
                 self.characters.append(contentsOf: response.results)
                 self.isFirstLoad = false
                 self.isLoadingMore = false
+                self.showEmptyResult = self.characters.isEmpty
+                self.showEndOfList = self.nextPage == nil && !self.showEmptyResult
             })
             .store(in: &cancellables)
     }
