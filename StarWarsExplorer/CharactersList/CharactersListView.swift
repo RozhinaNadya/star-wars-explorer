@@ -86,7 +86,7 @@ struct CharactersListView: View {
                 .tint(.white)
         }
         .padding(.horizontal, 10)
-        .padding(.vertical, 4)
+        .padding(.vertical, 6)
         .foregroundColor(.white)
         .overlay(RoundedRectangle(cornerRadius: 10).stroke(.white, lineWidth: 1))
         .onChange(of: viewModel.searchQuery) {
