@@ -77,14 +77,21 @@ struct CharactersListView: View {
     }
 
     private var starWarsSearchBar: some View {
-        TextField("Search characters...", text: $viewModel.searchQuery)
-            .padding(7)
-            .background(.clear)
-            .foregroundColor(.white)
-            .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.white, lineWidth: 1))
-            .onChange(of: viewModel.searchQuery) {
-                viewModel.searchCharacters()
+        ZStack(alignment: .leading) {
+            if viewModel.searchQuery.isEmpty {
+                Text("Search characters...")
+                    .foregroundColor(.white.opacity(0.4))
             }
+            TextField("", text: $viewModel.searchQuery)
+                .tint(.white)
+        }
+        .padding(.horizontal, 10)
+        .padding(.vertical, 4)
+        .foregroundColor(.white)
+        .overlay(RoundedRectangle(cornerRadius: 10).stroke(.white, lineWidth: 1))
+        .onChange(of: viewModel.searchQuery) {
+            viewModel.searchCharacters()
+        }
     }
 
     private var charactersList: some View {
