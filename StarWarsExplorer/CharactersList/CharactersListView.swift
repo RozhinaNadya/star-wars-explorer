@@ -52,7 +52,7 @@ struct CharactersListView: View {
                             }
                             if viewModel.nextPage == nil {
                                 Text("May the force be with you 💫")
-                                    .font(.callout)
+                                    .font(.subheadline)
                                     .foregroundStyle(Color.white.opacity(0.8))
                             }
                         }
