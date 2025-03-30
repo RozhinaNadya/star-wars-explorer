@@ -25,20 +25,20 @@ class CharactersAPIService: ICharactersAPIService {
     let cacheManager = CacheManager()
     
     func getCharactersData(url: String) -> AnyPublisher<CharactersResponseData, Error> {
-        if let chachedData = cacheManager.getCharactersData(for: url) {
-            return Just(chachedData).setFailureType(to: Error.self).eraseToAnyPublisher()
-        }
         guard let urlData = URL(string: url) else { fatalError("Invalid URL") }
-
-        let urlRequest = URLRequest(url: urlData)
 
         return Future { promise in
             Task {
                 do {
-                    let (data, response) = try await URLSession.shared.data(for: urlRequest)
-                    let charactersData = try await self.decodeCharactersData(response: response, data: data)
-                    self.cacheManager.setCharactersData(charactersData, for: url)
-                    promise(.success(charactersData))
+                    if let chachedData = self.cacheManager.getCharactersData(for: url) {
+                        promise(.success(chachedData))
+                    } else {
+                        let urlRequest = URLRequest(url: urlData)
+                        let (data, response) = try await URLSession.shared.data(for: urlRequest)
+                        let charactersData = try await self.decodeCharactersData(response: response, data: data)
+                        self.cacheManager.setCharactersData(charactersData, for: url)
+                        promise(.success(charactersData))
+                    }
                 } catch {
                     promise(.failure(error))
                 }
