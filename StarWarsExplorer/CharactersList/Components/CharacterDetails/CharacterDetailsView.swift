@@ -19,9 +19,9 @@ struct CharacterDetailsView: View {
                     .foregroundColor(.black.opacity(0.7))
             }
             .font(.system(size: 24))
-            .padding(20)
+            .padding(.bottom, 35)
 
-            LazyHGrid(rows: [GridItem(.flexible())]) {
+            HStack {
                 ForEach(viewModel.details) { item in
                     DetailView(detail: item)
                         .padding(.horizontal, 10)
