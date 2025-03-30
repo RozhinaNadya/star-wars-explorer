@@ -15,24 +15,28 @@ Star Wars Explorer presents a list of characters and the films they appeared in.
 ## Implementation:
 
 ### Caching
-Resposible class is CacheManager
+Resposible class is [CacheManager](https://github.com/RozhinaNadya/star-wars-explorer/blob/main/StarWarsExplorer/Sources/CacheManager.swift)
 
 CacheManager has get and set functions for CharactersData, HomeworldName and FilmTitles. Since in the CharactersData we can find Homeworld and Films as URLs, we need to manage their cache as well.
 
 ### API
-Resposible class is CharactersAPIService
+Resposible class is [CharactersAPIService](https://github.com/RozhinaNadya/star-wars-explorer/blob/main/StarWarsExplorer/Sources/CharactersAPIService.swift)
 
 For following abstraction, flexibility, testability, and better code organization principles, the class uses ICharactersAPIService protocol. The class has "shared" property as a Singleton to use only one instance of CharactersAPIService across the app. We can decode our data from URLs here with checking if the cache of these URLs is existed. 
 
 ### Models and ViewModels
-The project has models for CharactersResponseData, Character, CharacterListItem and Detail. That helps for proper decoding and easy data using in views and viewModels (CharacterListViewModel, CharacterDetailsViewModel).
+The project has [models](https://github.com/RozhinaNadya/star-wars-explorer/tree/main/StarWarsExplorer/Models) for CharactersResponseData, Character, CharacterListItem and Detail. That helps for proper decoding and easy data using in views and viewModels ([CharacterListViewModel](https://github.com/RozhinaNadya/star-wars-explorer/blob/main/StarWarsExplorer/CharactersList/CharacterListViewModel.swift), [CharacterDetailsViewModel](https://github.com/RozhinaNadya/star-wars-explorer/blob/main/StarWarsExplorer/CharactersList/Components/CharacterDetails/CharacterDetailsViewModel.swift)).
 
 ### UI 
 The App is built in SwiftUI
 
-main view: CharactersListView. The main view also has view components (subviews) inside for more readability. 
+main view: [CharactersListView](https://github.com/RozhinaNadya/star-wars-explorer/blob/main/StarWarsExplorer/CharactersList/CharactersListView.swift). The main view also has view components (subviews) inside for more readability. 
 
-components: CharactersListItemView, CharacterDetailsView, DetailView
+components: [CharactersListItemView](https://github.com/RozhinaNadya/star-wars-explorer/blob/main/StarWarsExplorer/CharactersList/Components/CharactersListItem/CharactersListItemView.swift), [CharacterDetailsView](https://github.com/RozhinaNadya/star-wars-explorer/blob/main/StarWarsExplorer/CharactersList/Components/CharacterDetails/CharacterDetailsView.swift), [DetailView](https://github.com/RozhinaNadya/star-wars-explorer/blob/main/StarWarsExplorer/CharactersList/Components/CharacterDetails/DetailView.swift)
 
 Since characters data has pagination the optimal way to present the list is LazyVGrid. It reduces memory usage, improves scroll performance and allows smooth dynamic loading of more data.
 
+### Logic
+Resposible class is [CharacterListViewModel](https://github.com/RozhinaNadya/star-wars-explorer/blob/main/StarWarsExplorer/CharactersList/CharacterListViewModel.swift)
+
+Here we handle all conditions for the View rendering and also control characters fetching, fetching more characters when it's needed and searching. Before making a new API request to avoid duplicate fetches we check the fetchedPages set. That is specially helpfull for searching. Searching also has "debounce", to avoid many unnecessary calls during user fast typing.
