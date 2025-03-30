@@ -84,5 +84,5 @@ private extension String {
 }
 
 private extension Int {
-    static let minItemsToLoadMore = 3
+    static let minItemsToLoadMore = 5
 }
