@@ -25,6 +25,8 @@ Resposible class is [CharactersAPIService](https://github.com/RozhinaNadya/star-
 For following abstraction, flexibility, testability, and better code organization principles, the class uses ICharactersAPIService protocol. The class has "shared" property as a Singleton to use only one instance of CharactersAPIService across the app. We can decode our data from URLs here with checking if the cache of these URLs is existed. 
 
 ### Models and ViewModels
+<img width="520" alt="Screenshot 2025-03-30 at 20 35 10" src="https://github.com/user-attachments/assets/5a377049-b9f2-4cd8-b2ca-9e54f79f1afd" />
+
 The project has [models](https://github.com/RozhinaNadya/star-wars-explorer/tree/main/StarWarsExplorer/Models) for CharactersResponseData, Character, CharacterListItem and Detail. That helps for proper decoding and easy data using in views and viewModels ([CharacterListViewModel](https://github.com/RozhinaNadya/star-wars-explorer/blob/main/StarWarsExplorer/CharactersList/CharacterListViewModel.swift), [CharacterDetailsViewModel](https://github.com/RozhinaNadya/star-wars-explorer/blob/main/StarWarsExplorer/CharactersList/Components/CharacterDetails/CharacterDetailsViewModel.swift)).
 
 ### UI 
@@ -32,7 +34,7 @@ The App is built in SwiftUI
 
 main view: [CharactersListView](https://github.com/RozhinaNadya/star-wars-explorer/blob/main/StarWarsExplorer/CharactersList/CharactersListView.swift). The main view also has view components (subviews) inside for more readability. 
 
-components: [CharactersListItemView](https://github.com/RozhinaNadya/star-wars-explorer/blob/main/StarWarsExplorer/CharactersList/Components/CharactersListItem/CharactersListItemView.swift), [CharacterDetailsView](https://github.com/RozhinaNadya/star-wars-explorer/blob/main/StarWarsExplorer/CharactersList/Components/CharacterDetails/CharacterDetailsView.swift), [DetailView](https://github.com/RozhinaNadya/star-wars-explorer/blob/main/StarWarsExplorer/CharactersList/Components/CharacterDetails/DetailView.swift)
+components: [CharactersListItemView](https://github.com/RozhinaNadya/star-wars-explorer/blob/main/StarWarsExplorer/CharactersList/Components/CharactersListItem/CharactersListItemView.swift), [CharacterDetailsView](https://github.com/RozhinaNadya/star-wars-explorer/blob/main/StarWarsExplorer/CharactersList/Components/CharacterDetails/CharacterDetailsView.swift), [DetailView](https://github.com/RozhinaNadya/star-wars-explorer/blob/main/StarWarsExplorer/CharactersList/Components/CharacterDetails/CharacterDetail/DetailView.swift)
 
 Since characters data has pagination the optimal way to present the list is LazyVGrid. It reduces memory usage, improves scroll performance and allows smooth dynamic loading of more data.
 
