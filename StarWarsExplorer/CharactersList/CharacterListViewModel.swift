@@ -51,13 +51,16 @@ class CharacterListViewModel: ObservableObject {
     }
 
     func searchCharacters() {
+        let searchUrl = searchQuery == "" ? .initialUrl : .initialUrl + .searchPath + searchQuery
+        let fetchUrl = searchUrl
+        fetchedPages.insert(fetchUrl)
         characters = []
-        let searchUrl = .initialUrl + .searchPath + searchQuery
         getCharactersData(url: searchUrl)
     }
 
     private func setupSearchSubscription() {
         $searchQuery
+            .removeDuplicates()
             .debounce(for: .milliseconds(300), scheduler: DispatchQueue.main)
             .sink { [weak self] newValue in
                 self?.searchCharacters()

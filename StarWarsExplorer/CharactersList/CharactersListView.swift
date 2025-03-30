@@ -9,8 +9,11 @@ import SwiftUI
 
 struct CharactersListView: View {
     @EnvironmentObject var viewModel: CharacterListViewModel
+
     @State private var selectedCharacter: Character?
     @State private var isShowingDetail = false
+
+    @FocusState private var searchFocus: Bool
 
     private let verticalGridlayout = [GridItem(.flexible())]
 
@@ -19,6 +22,9 @@ struct CharactersListView: View {
             Image("background")
                 .resizable()
                 .ignoresSafeArea()
+                .onTapGesture {
+                    searchFocus = false
+                }
             if viewModel.isFirstLoad {
                 ProgressView()
                     .tint(Color.white)
@@ -57,6 +63,7 @@ struct CharactersListView: View {
                 .onChange(of: selectedCharacter) {
                     // Ensure that selectedCharacter is updated to do not present an empty sheet
                     if selectedCharacter != nil {
+                        searchFocus = false
                         isShowingDetail = true
                     }
                 }
@@ -82,6 +89,7 @@ struct CharactersListView: View {
                     .foregroundColor(.white.opacity(0.4))
             }
             TextField("", text: $viewModel.searchQuery)
+                .focused($searchFocus)
                 .tint(.white)
         }
         .padding(.horizontal, 10)
