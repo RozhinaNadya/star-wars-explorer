@@ -34,9 +34,9 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				CharactersList/CharacterListViewModel.swift,
+				CharactersList/Components/CharacterDetails/CharacterDetail/DetailView.swift,
 				CharactersList/Components/CharacterDetails/CharacterDetailsView.swift,
 				CharactersList/Components/CharacterDetails/CharacterDetailsViewModel.swift,
-				CharactersList/Components/CharacterDetails/DetailView.swift,
 				CharactersList/Components/CharactersListItem/CharactersListItemView.swift,
 				Common/ResponseErrors.swift,
 				Models/Character.swift,
@@ -50,9 +50,9 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				CharactersList/CharacterListViewModel.swift,
+				CharactersList/Components/CharacterDetails/CharacterDetail/DetailView.swift,
 				CharactersList/Components/CharacterDetails/CharacterDetailsView.swift,
 				CharactersList/Components/CharacterDetails/CharacterDetailsViewModel.swift,
-				CharactersList/Components/CharacterDetails/DetailView.swift,
 				CharactersList/Components/CharactersListItem/CharactersListItemView.swift,
 				Common/ResponseErrors.swift,
 				Models/Character.swift,
