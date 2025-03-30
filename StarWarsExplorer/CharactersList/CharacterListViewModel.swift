@@ -18,7 +18,7 @@ class CharacterListViewModel: ObservableObject {
     var nextPage: String?
 
     private var cancellables = Set<AnyCancellable>()
-    private var fetchedPages = Set<String>() // Cache for fetched pages
+    private var fetchedPages = Set<String>() // To avoid multiple concurrent fetches
 
     init() {
         getCharactersData(url: .initialUrl)
@@ -30,9 +30,9 @@ class CharacterListViewModel: ObservableObject {
     }
 
     func getCharactersData(url: String) {
-        let fetchUrl = url
         guard !isLoadingMore else { return }
         isLoadingMore = true
+        let fetchUrl = url
         fetchedPages.insert(fetchUrl)
 
         CharactersAPIService.shared.getCharactersData(url: url)

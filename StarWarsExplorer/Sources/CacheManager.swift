@@ -11,6 +11,7 @@ class CacheManager {
     private let cacheQueue = DispatchQueue(label: "CacheManager.Queue")
     private var homeworldCache = [String: String]()
     private var filmCache = [String: String]()
+    private var charactersCache = [String: CharactersResponseData]()
     
     func getHomeworldName(for url: String) -> String? {
         return cacheQueue.sync { homeworldCache[url] }
@@ -26,5 +27,13 @@ class CacheManager {
     
     func setFilmTitle(_ title: String, for url: String) {
         cacheQueue.sync { filmCache[url] = title }
+    }
+    
+    func getCharactersData(for url: String) -> CharactersResponseData? {
+        return cacheQueue.sync { charactersCache[url] }
+    }
+    
+    func setCharactersData(_ data: CharactersResponseData, for url: String) {
+        cacheQueue.sync { charactersCache[url] = data }
     }
 }

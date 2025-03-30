@@ -22,18 +22,22 @@ struct Film: Codable {
 
 class CharactersAPIService: ICharactersAPIService {
     static let shared = CharactersAPIService()
-    private let cacheManager = CacheManager()
+    let cacheManager = CacheManager()
     
     func getCharactersData(url: String) -> AnyPublisher<CharactersResponseData, Error> {
-        guard let url = URL(string: url) else { fatalError("Invalid URL") }
+        if let chachedData = cacheManager.getCharactersData(for: url) {
+            return Just(chachedData).setFailureType(to: Error.self).eraseToAnyPublisher()
+        }
+        guard let urlData = URL(string: url) else { fatalError("Invalid URL") }
 
-        let urlRequest = URLRequest(url: url)
+        let urlRequest = URLRequest(url: urlData)
 
         return Future { promise in
             Task {
                 do {
                     let (data, response) = try await URLSession.shared.data(for: urlRequest)
                     let charactersData = try await self.decodeCharactersData(response: response, data: data)
+                    self.cacheManager.setCharactersData(charactersData, for: url)
                     promise(.success(charactersData))
                 } catch {
                     promise(.failure(error))
@@ -82,8 +86,8 @@ class CharactersAPIService: ICharactersAPIService {
     }
 
     private func getHomeworldName(from url: String) async throws -> String {
-        if let cachedName = cacheManager.getHomeworldName(for: url) {
-            return cachedName
+        if let cachedHomeworldName = cacheManager.getHomeworldName(for: url) {
+            return cachedHomeworldName
         }
         
         guard let dataUrl = URL(string: url) else { throw ResponseError.invalidURL }
@@ -98,8 +102,8 @@ class CharactersAPIService: ICharactersAPIService {
         var titles: [String] = []
 
         for url in urls {
-            if let cachedTitle = cacheManager.getFilmTitles(for: url) {
-                titles.append(cachedTitle)
+            if let cachedFilms = cacheManager.getFilmTitles(for: url) {
+                titles.append(cachedFilms)
             } else {
                 guard let dataUrl = URL(string: url) else { continue }
                 let (data, _) = try await URLSession.shared.data(from: dataUrl)
