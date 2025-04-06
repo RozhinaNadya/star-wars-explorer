@@ -28,3 +28,11 @@ struct Character: Identifiable, Codable, Equatable {
         case birthYear = "birth_year"
     }
 }
+
+struct Homeworld: Codable {
+    let name: String
+}
+
+struct Film: Codable {
+    let title: String
+}

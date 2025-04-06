@@ -12,14 +12,6 @@ protocol ICharactersAPIService {
     func getCharactersData(url: String) -> AnyPublisher<CharactersResponseData, Error>
 }
 
-struct Homeworld: Codable {
-    let name: String
-}
-
-struct Film: Codable {
-    let title: String
-}
-
 class CharactersAPIService: ICharactersAPIService {
     static let shared = CharactersAPIService()
     let cacheManager = CacheManager()
