@@ -102,7 +102,7 @@ struct CharactersListView: View {
             ForEach(Array(viewModel.characters.enumerated()), id: \.element.id) { index, character in
                 CharactersListItemView(
                     item: viewModel.getListItem(character: character),
-                    isSelected: viewModel.selectedCharacter == character)
+                    isSelected: viewModel.selectedCharacter?.name == character.name)
                     .onAppear {
                         viewModel.loadMoreCharactersIfNeeded(currentIndex: index)
                     }
