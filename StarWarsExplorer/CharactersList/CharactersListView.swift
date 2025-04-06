@@ -148,6 +148,7 @@ struct CharactersListView: View {
     let viewModel = CharacterListViewModel(isPreview: true, apiService: MockCharactersAPIService())
     viewModel.characters = MockCharactersAPIService().mockCharacters
     viewModel.isFirstLoad = false
+    viewModel.showEndOfList = true
 
     return CharactersListView()
         .environmentObject(viewModel)
