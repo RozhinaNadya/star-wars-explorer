@@ -33,6 +33,10 @@ struct CharactersListItemView: View {
 }
 
 #Preview {
-    let character = CharacterListItem(name: "Anakin Skywalker", filmTitles: ["film1", "film2", "film3", "film4", "film5", "film1", "film2", "film3", "film4", "film5"])
-    CharactersListItemView(item: character, isSelected: false)
+    let character = CharacterListItem(name: "Anakin Skywalker", filmTitles: ["film1", "film2", "film3", "film4", "film5"])
+    ZStack {
+        Color.black
+        CharactersListItemView(item: character, isSelected: false)
+    }
+    .ignoresSafeArea()
 }

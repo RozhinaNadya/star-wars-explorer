@@ -143,3 +143,12 @@ struct CharactersListView: View {
             .foregroundStyle(.white.opacity(0.8))
     }
 }
+
+#Preview {
+    let viewModel = CharacterListViewModel(isPreview: true, apiService: MockCharactersAPIService())
+    viewModel.characters = MockCharactersAPIService().mockCharacters
+    viewModel.isFirstLoad = false
+
+    return CharactersListView()
+        .environmentObject(viewModel)
+}

@@ -10,6 +10,7 @@ import Combine
 
 protocol ICharactersAPIService {
     func getCharactersData(url: String) -> AnyPublisher<CharactersResponseData, Error>
+    func getHomeworldName(from url: String) async throws -> String
 }
 
 class CharactersAPIService: ICharactersAPIService {
@@ -115,5 +116,31 @@ class CharactersAPIService: ICharactersAPIService {
         }
 
         return titles
+    }
+}
+
+class MockCharactersAPIService: ICharactersAPIService {
+    
+    let mockCharacters: [Character] = [
+        Character(name: "Luke Skywalker", height: "172", birthYear: "19BBY", gender: "Male", homeworld: "https://swapi.dev/api/planets/1/", films: ["A New Hope", "The Empire Strikes Back"]),
+        Character(name: "Leia Organa", height: "150", birthYear: "19BBY", gender: "Female", homeworld: "https://swapi.dev/api/planets/2/", films: ["A New Hope", "Return of the Jedi"])
+    ]
+
+    func getCharactersData(url: String) -> AnyPublisher<CharactersResponseData, Error> {
+        let mockData = CharactersResponseData(count: mockCharacters.count, next: nil, previous: nil, results: mockCharacters)
+        return Just(mockData)
+            .setFailureType(to: Error.self)
+            .eraseToAnyPublisher()
+    }
+
+    func getHomeworldName(from url: String) async throws -> String {
+        switch url {
+        case "https://swapi.dev/api/planets/1/":
+            return "Tatooine"
+        case "https://swapi.dev/api/planets/2/":
+            return "Alderaan"
+        default:
+            return "Unknown Homeworld"
+        }
     }
 }

@@ -20,10 +20,15 @@ class CharacterListViewModel: ObservableObject {
 
     private var cancellables = Set<AnyCancellable>()
     private var fetchedPages = Set<String>() // To avoid multiple concurrent fetches
+    
+    let apiService: ICharactersAPIService
 
-    init() {
-        getCharactersData(url: .initialUrl)
-        setupSearchSubscription()
+    init(isPreview: Bool = false, apiService: ICharactersAPIService = CharactersAPIService.shared) {
+        self.apiService = apiService
+        if !isPreview {
+            getCharactersData(url: .initialUrl)
+            setupSearchSubscription()
+        }
     }
 
     func getListItem(character: Character) -> CharacterListItem {
@@ -36,7 +41,7 @@ class CharacterListViewModel: ObservableObject {
         let fetchUrl = url
         fetchedPages.insert(fetchUrl)
 
-        CharactersAPIService.shared.getCharactersData(url: url)
+        apiService.getCharactersData(url: url)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { _ in
                 self.isLoadingMore = false
@@ -88,7 +93,7 @@ class CharacterListViewModel: ObservableObject {
     
     func getCharacterHomeworld(url: String) async -> String {
         do {
-            return try await CharactersAPIService.shared.getHomeworldName(from: url)
+            return try await apiService.getHomeworldName(from: url)
         } catch {
             return "Classified 🤐"
         }
