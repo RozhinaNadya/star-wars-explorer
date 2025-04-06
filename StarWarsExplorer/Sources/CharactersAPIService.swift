@@ -30,13 +30,13 @@ class CharactersAPIService: ICharactersAPIService {
         return Future { promise in
             Task {
                 do {
-                    if let chachedData = self.cacheManager.getCharactersData(for: url) {
+                    if let chachedData = await self.cacheManager.getCharactersData(for: url) {
                         promise(.success(chachedData))
                     } else {
                         let urlRequest = URLRequest(url: urlData)
                         let (data, response) = try await URLSession.shared.data(for: urlRequest)
                         let charactersData = try await self.decodeCharactersData(response: response, data: data)
-                        self.cacheManager.setCharactersData(charactersData, for: url)
+                        await self.cacheManager.setCharactersData(charactersData, for: url)
                         promise(.success(charactersData))
                     }
                 } catch {
@@ -86,7 +86,7 @@ class CharactersAPIService: ICharactersAPIService {
     }
 
     private func getHomeworldName(from url: String) async throws -> String {
-        if let cachedHomeworldName = cacheManager.getHomeworldName(for: url) {
+        if let cachedHomeworldName = await cacheManager.getHomeworldName(for: url) {
             return cachedHomeworldName
         }
         
@@ -94,7 +94,7 @@ class CharactersAPIService: ICharactersAPIService {
         let (data, _) = try await URLSession.shared.data(from: dataUrl)
         let homeworld = try JSONDecoder().decode(Homeworld.self, from: data)
 
-        cacheManager.setHomeworldName(homeworld.name, for: url)
+        await cacheManager.setHomeworldName(homeworld.name, for: url)
         return homeworld.name
     }
 
@@ -102,14 +102,14 @@ class CharactersAPIService: ICharactersAPIService {
         var titles: [String] = []
 
         for url in urls {
-            if let cachedFilms = cacheManager.getFilmTitles(for: url) {
+            if let cachedFilms = await cacheManager.getFilmTitles(for: url) {
                 titles.append(cachedFilms)
             } else {
                 guard let dataUrl = URL(string: url) else { continue }
                 let (data, _) = try await URLSession.shared.data(from: dataUrl)
                 let film = try JSONDecoder().decode(Film.self, from: data)
 
-                cacheManager.setFilmTitle(film.title, for: url)
+                await cacheManager.setFilmTitle(film.title, for: url)
                 titles.append(film.title)
             }
         }

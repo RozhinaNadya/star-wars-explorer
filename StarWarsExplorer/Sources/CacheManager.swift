@@ -7,33 +7,33 @@
 
 import Foundation
 
-class CacheManager {
+actor CacheManager {
     private let cacheQueue = DispatchQueue(label: "CacheManager.Queue")
     private var homeworldCache = [String: String]()
     private var filmCache = [String: String]()
     private var charactersCache = [String: CharactersResponseData]()
     
     func getHomeworldName(for url: String) -> String? {
-        return cacheQueue.sync { homeworldCache[url] }
+        homeworldCache[url]
     }
     
     func setHomeworldName(_ name: String, for url: String) {
-        cacheQueue.sync { homeworldCache[url] = name }
+        homeworldCache[url] = name
     }
     
     func getFilmTitles(for url: String) -> String? {
-        return cacheQueue.sync { filmCache[url] }
+        filmCache[url]
     }
     
     func setFilmTitle(_ title: String, for url: String) {
-        cacheQueue.sync { filmCache[url] = title }
+        filmCache[url] = title
     }
     
     func getCharactersData(for url: String) -> CharactersResponseData? {
-        return cacheQueue.sync { charactersCache[url] }
+        charactersCache[url]
     }
     
     func setCharactersData(_ data: CharactersResponseData, for url: String) {
-        cacheQueue.sync { charactersCache[url] = data }
+        charactersCache[url] = data
     }
 }
