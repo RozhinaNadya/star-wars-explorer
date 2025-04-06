@@ -46,6 +46,19 @@ class CharactersAPIService: ICharactersAPIService {
         }
         .eraseToAnyPublisher()
     }
+    
+    func getHomeworldName(from url: String) async throws -> String {
+        if let cachedHomeworldName = await cacheManager.getHomeworldName(for: url) {
+            return cachedHomeworldName
+        }
+        
+        guard let dataUrl = URL(string: url) else { throw ResponseError.invalidURL }
+        let (data, _) = try await URLSession.shared.data(from: dataUrl)
+        let homeworld = try JSONDecoder().decode(Homeworld.self, from: data)
+
+        await cacheManager.setHomeworldName(homeworld.name, for: url)
+        return homeworld.name
+    }
 
     private func decodeCharactersData(response: URLResponse, data: Data?) async throws -> CharactersResponseData {
         guard let data else { throw ResponseError.decodeCharactersDataError }
@@ -57,15 +70,14 @@ class CharactersAPIService: ICharactersAPIService {
             for character in charactersData.results {
                 group.addTask {
                     do {
-                        let homeworldName = try await self.getHomeworldName(from: character.homeworld)
-                        let filmTitles = try await self.getFilmTitles(from: character.films)
+                        var filmTitles = try await self.getFilmTitles(from: character.films)
 
                         return Character(
                             name: character.name,
                             height: character.height,
                             birthYear: character.birthYear,
                             gender: character.gender,
-                            homeworld: homeworldName,
+                            homeworld: character.homeworld,
                             films: filmTitles
                         )
                     } catch {
@@ -83,19 +95,6 @@ class CharactersAPIService: ICharactersAPIService {
 
         charactersData.results = updatedCharacters
         return charactersData
-    }
-
-    private func getHomeworldName(from url: String) async throws -> String {
-        if let cachedHomeworldName = await cacheManager.getHomeworldName(for: url) {
-            return cachedHomeworldName
-        }
-        
-        guard let dataUrl = URL(string: url) else { throw ResponseError.invalidURL }
-        let (data, _) = try await URLSession.shared.data(from: dataUrl)
-        let homeworld = try JSONDecoder().decode(Homeworld.self, from: data)
-
-        await cacheManager.setHomeworldName(homeworld.name, for: url)
-        return homeworld.name
     }
 
     private func getFilmTitles(from urls: [String]) async throws -> [String] {

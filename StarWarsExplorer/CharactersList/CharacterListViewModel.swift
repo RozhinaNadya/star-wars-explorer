@@ -11,6 +11,7 @@ import Foundation
 class CharacterListViewModel: ObservableObject {
     @Published var characters: [Character] = []
     @Published var showEmptyResult = false
+    @Published var selectedCharacter: Character?
     @Published var isLoadingMore = false
     @Published var isFirstLoad = true
     @Published var searchQuery = ""
@@ -57,6 +58,41 @@ class CharacterListViewModel: ObservableObject {
         characters = []
         getCharactersData(url: searchUrl)
     }
+    
+    func loadMoreCharactersIfNeeded(currentIndex: Int) {
+        let thresholdIndex = characters.count - .minItemsToLoadMore
+            guard currentIndex >= thresholdIndex, !isLoadingMore else { return }
+
+        if let nextPage = nextPage {
+            getCharactersData(url: nextPage)
+        }
+    }
+    
+    func getDetails(character: Character) {
+        Task {
+            let homeworldName = await getCharacterHomeworld(url: character.homeworld)
+            let formattedCharacter = Character(
+                name: character.name,
+                height: character.height,
+                birthYear: character.birthYear,
+                gender: character.gender,
+                homeworld: homeworldName,
+                films: character.films
+            )
+
+            await MainActor.run {
+                self.selectedCharacter = formattedCharacter
+            }
+        }
+    }
+    
+    func getCharacterHomeworld(url: String) async -> String {
+        do {
+            return try await CharactersAPIService.shared.getHomeworldName(from: url)
+        } catch {
+            return "Classified 🤐"
+        }
+    }
 
     private func setupSearchSubscription() {
         $searchQuery
@@ -66,15 +102,6 @@ class CharacterListViewModel: ObservableObject {
                 self?.searchCharacters()
             }
             .store(in: &cancellables)
-    }
-
-    func loadMoreCharactersIfNeeded(currentIndex: Int) {
-        let thresholdIndex = characters.count - .minItemsToLoadMore
-            guard currentIndex >= thresholdIndex, !isLoadingMore else { return }
-
-        if let nextPage = nextPage {
-            getCharactersData(url: nextPage)
-        }
     }
 }
 

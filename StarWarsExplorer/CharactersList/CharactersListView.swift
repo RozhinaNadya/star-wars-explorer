@@ -10,7 +10,6 @@ import SwiftUI
 struct CharactersListView: View {
     @EnvironmentObject var viewModel: CharacterListViewModel
 
-    @State private var selectedCharacter: Character?
     @State private var isShowingDetail = false
 
     @FocusState private var searchFocus: Bool
@@ -54,15 +53,15 @@ struct CharactersListView: View {
                     }
                 }
                 .padding(.horizontal, 10)
-                .sheet(isPresented: $isShowingDetail, onDismiss: { selectedCharacter = nil }) {
-                    if let selectedCharacter = selectedCharacter {
+                .sheet(isPresented: $isShowingDetail, onDismiss: { viewModel.selectedCharacter = nil }) {
+                    if let selectedCharacter = viewModel.selectedCharacter {
                         CharacterDetailsView(viewModel: CharacterDetailsViewModel(character: selectedCharacter))
                             .presentationDetents([.fraction(0.4)])
                     }
                 }
-                .onChange(of: selectedCharacter) {
+                .onChange(of: viewModel.selectedCharacter) {
                     // Ensure that selectedCharacter is updated to do not present an empty sheet
-                    if selectedCharacter != nil {
+                    if viewModel.selectedCharacter != nil {
                         searchFocus = false
                         isShowingDetail = true
                     }
@@ -108,7 +107,7 @@ struct CharactersListView: View {
                         viewModel.loadMoreCharactersIfNeeded(currentIndex: index)
                     }
                     .onTapGesture {
-                        selectedCharacter = character
+                        viewModel.getDetails(character: character)
                     }
             }
         }

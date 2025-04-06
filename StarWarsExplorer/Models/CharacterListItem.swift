@@ -2,19 +2,19 @@
 //  CharacterListItem.swift
 //  StarWarsExplorer
 //
-//  Created by Rozhina,Nadya on 2025-03-27.
+//  Created by Nadya Rozhina on 2025-03-27.
 //
 
 import Foundation
 
 struct CharacterListItem: Identifiable {
-    var id = UUID()
-    var name: String
-    var filmTitles: [String]
+    let id = UUID()
+    let name: String
+    let filmTitles: [String]
 }
 
 struct Detail: Identifiable {
-    var id = UUID()
-    var title: String
-    var value: String
+    let id = UUID()
+    let title: String
+    let value: String
 }

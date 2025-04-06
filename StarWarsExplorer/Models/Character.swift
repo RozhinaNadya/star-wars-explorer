@@ -15,13 +15,13 @@ struct CharactersResponseData: Codable {
 }
 
 struct Character: Identifiable, Codable, Equatable {
-    var id = UUID()
+    let id = UUID()
     let name: String
     let height: String
     let birthYear: String
     let gender: String
-    var homeworld: String
-    var films: [String]
+    let homeworld: String
+    let films: [String]
     
     enum CodingKeys: String, CodingKey {
         case name, height, gender, homeworld, films

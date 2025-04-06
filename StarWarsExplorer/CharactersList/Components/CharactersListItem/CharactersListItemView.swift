@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CharactersListItemView: View {
     var item: CharacterListItem
-    let isSelected: Bool
+    var isSelected: Bool
     
     var body: some View {
         HStack {
