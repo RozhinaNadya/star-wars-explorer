@@ -8,7 +8,6 @@
 import Foundation
 
 actor CacheManager {
-    private let cacheQueue = DispatchQueue(label: "CacheManager.Queue")
     private var homeworldCache = [String: String]()
     private var filmCache = [String: String]()
     private var charactersCache = [String: CharactersResponseData]()
